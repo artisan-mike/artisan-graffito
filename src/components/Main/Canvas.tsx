@@ -10,8 +10,8 @@ import {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
-} from '@/lib/handlers';
-import { appState } from '@/store/appState';
+} from '@/lib/canvas_handlers';
+import { appState } from '@/store/app_state';
 
 interface CanvasProps extends React.ComponentProps<'canvas'> {}
 
@@ -19,7 +19,7 @@ export function Canvas({ className, ...rest }: CanvasProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const roughCanvasRef = useRef<RoughCanvas | null>(null);
     const [isMousePressed, setIsMousePressed] = useState(false);
-    const { actualStroke, drawnStrokes } = useSnapshot(appState);
+    const { actualStroke, drawnStrokes, historyIndex } = useSnapshot(appState);
 
     // initialize roughCanvas on the first render
     useEffect(() => {
@@ -58,7 +58,10 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         ctx?.clearRect(0, 0, canvas.width, canvas.height);
 
         const drawnStrokes = Array.from(appState.drawnStrokes);
-        drawnStrokes.map((drawnStroke) => {
+        drawnStrokes.forEach((drawnStroke, index) => {
+            // if the drawn stroke index is greater that the drawnStroke state
+            //  length minus the history index, skip drawing it
+            if (index >= drawnStrokes.length - historyIndex) return;
             roughCanvas.curve(drawnStroke.points, {
                 strokeWidth: drawnStroke.strokeWidth,
                 fill: 'green',
@@ -74,7 +77,7 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         return () => {
             ctx?.clearRect(0, 0, canvas.width, canvas.height);
         };
-    }, [drawnStrokes]);
+    }, [drawnStrokes, historyIndex]);
 
     return (
         <canvas

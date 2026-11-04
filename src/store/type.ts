@@ -8,6 +8,10 @@ export type Stroke = {
 };
 
 export interface AppState {
+    // contains the points that the user are drawing
     actualStroke: Stroke;
+    // contains the strokes that the user has drawn
     drawnStrokes: Stroke[];
+    // number of strokes to prevent from diplaying
+    historyIndex: number;
 }

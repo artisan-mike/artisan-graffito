@@ -1,0 +1,23 @@
+'use client';
+
+import { ArrowArcLeftIcon, ArrowArcRightIcon } from '@phosphor-icons/react';
+
+import { handleRedoClick, handleUndoClick } from '@/lib/controler_handlers';
+
+import { Button } from '../sharables/Button';
+
+export function Control() {
+    return (
+        <div className="mt-5 flex gap-4">
+            <Button onClick={handleUndoClick}>
+                <ArrowArcLeftIcon className="text-5xl" />
+            </Button>
+            <Button
+                onClick={handleRedoClick}
+                className="hover:rotate-5"
+            >
+                <ArrowArcRightIcon className="text-5xl" />
+            </Button>
+        </div>
+    );
+}

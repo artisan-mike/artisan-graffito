@@ -11,3 +11,8 @@
 
     - Created the Canvas component in wich we can draw
     - Added the ability to draw in the canvas
+
+## 0.2.0
+
+    - Added undo and redo functionality
+    - created button component

@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react';
 
-import { appState } from '@/store/appState';
+import { appState } from '@/store/app_state';
 
 import {
     calculateMousePositionOnCanvas,
@@ -9,8 +9,9 @@ import {
 } from './utils';
 
 /**
- * @description retrieve the mouse position when the user click
- * on the canvas element and push it to actualStroke state
+ * @description Retrieve the mouse point position when the user click
+ * on the canvas element, remove all the strokes behind the history index
+ * then push the point to the actualStroke state
  */
 export function handleMouseDown(ev: MouseEvent<HTMLCanvasElement>) {
     // get the canva element
@@ -18,11 +19,17 @@ export function handleMouseDown(ev: MouseEvent<HTMLCanvasElement>) {
     // calculate the actual mouse position
     const { newX, newY } = calculateMousePositionOnCanvas(canvas, ev);
 
-    // push this point directy in the state
-    if (appState.actualStroke.points.length === 0) {
-        appState.actualStroke.points.push([newX, newY]);
-        return;
-    }
+    // remove the strokes behind the history index
+    appState.drawnStrokes.splice(
+        appState.drawnStrokes.length - appState.historyIndex,
+    );
+    console.log(appState.drawnStrokes);
+
+    // reset the history index
+    appState.historyIndex = 0;
+
+    // push this point directly in the state
+    appState.actualStroke.points.push([newX, newY]);
 }
 
 /**
@@ -50,7 +57,6 @@ export const handleMouseMove = throttle(
 
         // push the point to actualStroke state
         appState.actualStroke.points.push([newX, newY]);
-        console.log(appState.actualStroke.points);
     },
     4,
 );
@@ -62,5 +68,4 @@ export const handleMouseMove = throttle(
 export function handleMouseUp() {
     appState.drawnStrokes.push({ ...appState.actualStroke });
     appState.actualStroke.points = [];
-    console.log(appState);
 }
