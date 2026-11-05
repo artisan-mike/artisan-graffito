@@ -50,3 +50,7 @@
     - added the transparent color
     - fixed the fill color buttons not rendering with the actual fill style
     - removed stroke entrirely when the stroke width is set to 0
+
+## 0.7.0
+
+    - add the functionality to save the drawing into a png file

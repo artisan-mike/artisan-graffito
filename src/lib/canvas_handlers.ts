@@ -68,3 +68,28 @@ export function handleMouseUp() {
     appState.drawnStrokes.push({ ...appState.actualStroke });
     appState.actualStroke.points = [];
 }
+
+/**
+ * @description Save the image contained in the canvas as png image
+ */
+export function saveToPng(canvas: HTMLCanvasElement | null) {
+    console.log('runing saveToPng');
+
+    if (!canvas) return;
+    console.log('saving the image');
+
+    // create a png blop object from the image contained in the canvas
+    canvas.toBlob((blop) => {
+        if (!blop) return;
+
+        // create an url that point to the blop object
+        const url = URL.createObjectURL(blop);
+
+        // create a link that point to the url and click it to
+        // download the blop object
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'dessin.png';
+        link.click();
+    }, 'image/png');
+}

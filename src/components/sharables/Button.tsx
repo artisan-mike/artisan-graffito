@@ -46,13 +46,16 @@ export function Button({
     return (
         <button
             className={cn(
-                'relative flex items-center justify-center w-7 h-6 active:translate-1 transition-all cursor-pointer hover:-rotate-5 ',
+                'relative flex items-center justify-center w-7 h-6  transition-all cursor-pointer hover:-rotate-5 ',
                 disabled && 'active:translate-0 hover:rotate-0',
                 className,
             )}
             {...rest}
         >
-            <span className="relative z-10"> {children}</span>
+            <span className="relative z-10 flex items-center justify-center gap-2">
+                {' '}
+                {children}
+            </span>
 
             <canvas
                 ref={canvasRef}

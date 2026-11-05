@@ -1,5 +1,6 @@
 'use client';
 
+import { DownloadIcon } from '@phosphor-icons/react';
 import { cn } from 'cn';
 import { useEffect, useRef, useState } from 'react';
 import rough from 'roughjs';
@@ -11,9 +12,12 @@ import {
     handleMouseDown,
     handleMouseMove,
     handleMouseUp,
+    saveToPng,
 } from '@/lib/canvas_handlers';
 import { appState } from '@/store/app_state';
 import { Point } from '@/store/type';
+
+import { Button } from '../sharables/Button';
 
 interface CanvasProps extends React.ComponentProps<'div'> {}
 
@@ -81,9 +85,14 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         if (!renderingCanvasRef.current) return;
         const canvas = renderingCanvasRef.current;
 
-        // clear the canvas before rendering the drawn strokes
         const ctx = canvas.getContext('2d');
-        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+        if (ctx) {
+            // clear the canvas before rendering the drawn strokes
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // create a white bg in the canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
 
         drawnStrokes.forEach((drawnStroke, index) => {
             // if the drawn stroke index is greater that the drawnStroke state
@@ -114,8 +123,8 @@ export function Canvas({ className, ...rest }: CanvasProps) {
             {...rest}
         >
             <canvas
-                width={500}
-                height={500}
+                width={1000}
+                height={1000}
                 ref={drawingCanvasRef}
                 onMouseMove={(e) => {
                     handleMouseMove(e, isMousePressed);
@@ -135,11 +144,21 @@ export function Canvas({ className, ...rest }: CanvasProps) {
                 className="border-text-strong absolute top-0 left-1/2 z-10 -translate-x-1/2 border-2"
             ></canvas>
             <canvas
-                width={500}
-                height={500}
+                width={1000}
+                height={1000}
                 ref={renderingCanvasRef}
-                className="border-text-strong border-2"
+                className="border-text-strong border-2 bg-white"
             ></canvas>
+            <Button
+                onClick={() => {
+                    console.log('hmmmm');
+                    saveToPng(renderingCanvasRef.current);
+                }}
+                className="absolute -top-2 right-0 w-9 -translate-y-full"
+            >
+                <DownloadIcon className="text-5xl" />
+                Enrigistrer en PNG
+            </Button>
         </div>
     );
 }
