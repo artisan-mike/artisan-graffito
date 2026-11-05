@@ -15,11 +15,17 @@ import {
 import { appState } from '@/store/app_state';
 import { Point } from '@/store/type';
 
-interface CanvasProps extends React.ComponentProps<'canvas'> {}
+interface CanvasProps extends React.ComponentProps<'div'> {}
 
 export function Canvas({ className, ...rest }: CanvasProps) {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-    const roughCanvasRef = useRef<RoughCanvas | null>(null);
+    // contains the rendering canvas element and the corresponding rc
+    // used for redering the strokes in app state
+    const renderingCanvasRef = useRef<HTMLCanvasElement>(null);
+    const renderingRcRef = useRef<RoughCanvas | null>(null);
+    // contains the drawing canvas elemet and the correspoind rc
+    // used for drawing the points in the actualStrokes app state
+    const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
+    const drawingRcRef = useRef<RoughCanvas | null>(null);
     const [isMousePressed, setIsMousePressed] = useState(false);
     const { actualStroke, drawnStrokes, historyIndex } = useSnapshot(appState);
 
@@ -33,16 +39,20 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         hachureAngle: 45,
     });
 
-    // initialize roughCanvas on the first render
+    // initialize the rcs (RoughCavas) on the first render
     useEffect(() => {
-        if (!canvasRef.current) return;
-        roughCanvasRef.current = rough.canvas(canvasRef.current);
+        if (!renderingCanvasRef.current) return;
+        if (!drawingCanvasRef.current) return;
+        drawingRcRef.current = rough.canvas(drawingCanvasRef.current);
+        renderingRcRef.current = rough.canvas(renderingCanvasRef.current);
     }, []);
 
     // draw the strokes in the actual strokes state whenever it changes
     useEffect(() => {
-        if (!roughCanvasRef.current) return;
-        const roughCanvas = roughCanvasRef.current;
+        if (!drawingRcRef.current) return;
+        if (!drawingCanvasRef.current) return;
+        const roughCanvas = drawingRcRef.current;
+        const canvas = drawingCanvasRef.current;
         const actualPoints = Array.from(appState.actualStroke.points);
 
         if (actualStroke.points.length > 0) {
@@ -53,18 +63,24 @@ export function Canvas({ className, ...rest }: CanvasProps) {
                 ...defaultStrokeOption.current,
             });
         }
+        console.log('drawing executed');
+
+        return () => {
+            const ctx = canvas.getContext('2d');
+            ctx?.clearRect(0, 0, canvas.width, canvas.height);
+        };
     }, [actualStroke, defaultStrokeOption]);
 
-    // draw the strokes in the drawn strokes whenever it changes
+    // render the strokes in the drawn strokes whenever it changes
     useEffect(() => {
         console.log('drawing stokes from the draw strokes');
 
-        if (!roughCanvasRef.current) return;
-        const roughCanvas = roughCanvasRef.current;
-        if (!canvasRef.current) return;
-        const canvas = canvasRef.current;
+        if (!renderingRcRef.current) return;
+        const roughCanvas = renderingRcRef.current;
+        if (!renderingCanvasRef.current) return;
+        const canvas = renderingCanvasRef.current;
 
-        // clear the canvas before drawing the drawn strokes
+        // clear the canvas before rendering the drawn strokes
         const ctx = canvas.getContext('2d');
         ctx?.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -92,30 +108,37 @@ export function Canvas({ className, ...rest }: CanvasProps) {
     }, [drawnStrokes, historyIndex]);
 
     return (
-        <canvas
-            ref={canvasRef}
-            width={700}
-            height={700}
-
-            onMouseMove={(e) => {
-                handleMouseMove(e, isMousePressed);
-            }}
-            onMouseDown={(e) => {
-                setIsMousePressed(true);
-                handleMouseDown(e);
-            }}
-            onMouseUp={() => {
-                setIsMousePressed(false);
-                handleMouseUp();
-            }}
-            onMouseLeave={() => {
-                setIsMousePressed(false);
-            }}
-            className={cn(
-                'border-2 border-text-strong bg-white m-auto',
-                className,
-            )}
+        <div
+            className={cn('relative m-auto w-fit', className)}
             {...rest}
-        ></canvas>
+        >
+            <canvas
+                width={500}
+                height={500}
+                ref={drawingCanvasRef}
+                onMouseMove={(e) => {
+                    handleMouseMove(e, isMousePressed);
+                }}
+                onMouseDown={(e) => {
+                    setIsMousePressed(true);
+                    handleMouseDown(e);
+                }}
+                onMouseUp={() => {
+                    setIsMousePressed(false);
+                    handleMouseUp();
+                }}
+                onMouseLeave={() => {
+                    setIsMousePressed(false);
+                }}
+
+                className="border-text-strong absolute top-0 left-1/2 z-10 -translate-x-1/2 border-2"
+            ></canvas>
+            <canvas
+                width={500}
+                height={500}
+                ref={renderingCanvasRef}
+                className="border-text-strong border-2"
+            ></canvas>
+        </div>
     );
 }

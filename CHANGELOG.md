@@ -25,3 +25,8 @@
 ## 0.3.1
 
     - fixed inifinite loop when drawing a single point
+
+## 0.3.2
+
+    - created two canvas, one for drawing, one for rendering drawn strokes
+    - fixed the actualStroke rerendering when drawing
