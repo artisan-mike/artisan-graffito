@@ -40,3 +40,7 @@
 
     - restyled the stroke settings
     - added strokeSettings component
+
+## 0.5.0
+
+    - added the stroke sytle changing functionality

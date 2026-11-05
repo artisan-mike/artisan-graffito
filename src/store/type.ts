@@ -1,12 +1,13 @@
 export type Point = [number, number];
 
-export type fillStyle = 'hachure' | 'solid' | 'cross-hatch ' | 'dots';
+export type fillStyle = 'hachure' | 'solid' | 'cross-hatch' | 'zigzag';
 
 export type Stroke = {
     type: 'curve';
     strokeWidth: number;
     color: string;
     fillColor: string;
+    fillStyle: fillStyle;
     points: Point[];
 };
 

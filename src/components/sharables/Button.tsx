@@ -35,10 +35,12 @@ export function Button({
             strokeWidth: 2,
             hachureGap: 12,
             fillWeight: 2,
+            seed: 7,
         });
 
         return () => {
-            canvas.getContext('2d')?.clearRect(0, 0, canvasWidth, canvasHeight);
+            const ctx = canvas.getContext('2d');
+            ctx?.clearRect(0, 0, canvas.width, canvas.height);
         };
     });
     return (

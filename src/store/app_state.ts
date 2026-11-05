@@ -7,6 +7,7 @@ export const appState = proxy<AppState>({
         strokeWidth: 3,
         color: 'black',
         fillColor: 'yellow',
+        fillStyle: 'hachure',
         type: 'curve',
         points: [],
     },

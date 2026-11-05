@@ -59,7 +59,11 @@ export function Canvas({ className, ...rest }: CanvasProps) {
             roughCanvas.curve(actualPoints, {
                 strokeWidth: actualStroke.strokeWidth,
                 fill: actualStroke.fillColor,
-                stroke: actualStroke.color,
+                fillStyle: actualStroke.fillStyle,
+                stroke:
+                    actualStroke.strokeWidth === 0
+                        ? 'none'
+                        : actualStroke.color,
                 ...defaultStrokeOption.current,
             });
         }
@@ -92,7 +96,9 @@ export function Canvas({ className, ...rest }: CanvasProps) {
             roughCanvas.curve(points, {
                 strokeWidth: drawnStroke.strokeWidth,
                 fill: drawnStroke.fillColor,
-                stroke: drawnStroke.color,
+                fillStyle: drawnStroke.fillStyle,
+                stroke:
+                    drawnStroke.strokeWidth === 0 ? 'none' : drawnStroke.color,
                 ...defaultStrokeOption.current,
             });
         });

@@ -3,6 +3,7 @@
 import { cn } from 'cn';
 import React from 'react';
 
+import { colors } from '@/store/constant_datas';
 import { fillStyle } from '@/store/type';
 
 import { Button } from '../sharables/Button';
@@ -18,14 +19,6 @@ export function ColorPicker({
     className,
     ...rest
 }: ColorPickerProps) {
-    const colors: string[] = [
-        'black',
-        'white',
-        'red',
-        'blue',
-        'green',
-        'yellow',
-    ];
     return (
         <div
             className={cn(
