@@ -1,5 +1,7 @@
 export type Point = [number, number];
 
+export type fillStyle = 'hachure' | 'solid' | 'cross-hatch ' | 'dots';
+
 export type Stroke = {
     type: 'curve';
     strokeWidth: number;

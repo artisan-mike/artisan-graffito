@@ -11,8 +11,9 @@ export function StrokeWidth() {
         <form
             action=""
             onSubmit={(e) => e.preventDefault()}
+            className="flex flex-col"
         >
-            <label htmlFor="strokeWidth">Stroke width: {value}</label>
+            <label htmlFor="strokeWidth">Taille du trait: {value}</label>
             <input
                 type="range"
                 name="strokeWitdth"
@@ -26,6 +27,10 @@ export function StrokeWidth() {
                     handleRangeChange(rangeValue);
                 }}
             />
+            <div
+                style={{ width: value, height: value, background: 'black' }}
+                className="m-auto rounded-full"
+            ></div>
         </form>
     );
 }

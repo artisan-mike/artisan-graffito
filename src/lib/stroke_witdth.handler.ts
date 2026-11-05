@@ -6,4 +6,5 @@ import { appState } from '@/store/app_state';
  */
 export function handleRangeChange(value: number) {
     appState.actualStroke.strokeWidth = value;
+    console.log(appState.actualStroke);
 }

@@ -14,8 +14,6 @@ import {
  * then push the point to the actualStroke state
  */
 export function handleMouseDown(ev: MouseEvent<HTMLCanvasElement>) {
-    console.log('mouse clicked');
-
     // get the canva element
     const canvas = ev.currentTarget;
     // calculate the actual mouse position

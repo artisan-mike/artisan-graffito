@@ -8,13 +8,17 @@ import { Button } from '../sharables/Button';
 
 export function Control() {
     return (
-        <div className="mt-5 flex gap-4">
-            <Button onClick={handleUndoClick}>
+        <div className="m-auto mt-2 flex w-fit gap-4">
+            <Button
+                onClick={handleUndoClick}
+                fillStyle="dots"
+            >
                 <ArrowArcLeftIcon className="text-5xl" />
             </Button>
             <Button
                 onClick={handleRedoClick}
                 className="hover:rotate-5"
+                fillStyle="dots"
             >
                 <ArrowArcRightIcon className="text-5xl" />
             </Button>

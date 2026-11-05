@@ -31,7 +31,12 @@
     - created two canvas, one for drawing, one for rendering drawn strokes
     - fixed the actualStroke rerendering when drawing
 
-## 0.4.1
+## 0.4.0
 
     - added functionality to change the stroke width before drawing
     - created strokeWidth component
+
+## 0.4.1
+
+    - restyled the stroke settings
+    - added strokeSettings component

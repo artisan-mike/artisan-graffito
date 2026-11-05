@@ -63,7 +63,6 @@ export function Canvas({ className, ...rest }: CanvasProps) {
                 ...defaultStrokeOption.current,
             });
         }
-        console.log('drawing executed');
 
         return () => {
             const ctx = canvas.getContext('2d');
@@ -73,8 +72,6 @@ export function Canvas({ className, ...rest }: CanvasProps) {
 
     // render the strokes in the drawn strokes whenever it changes
     useEffect(() => {
-        console.log('drawing stokes from the draw strokes');
-
         if (!renderingRcRef.current) return;
         const roughCanvas = renderingRcRef.current;
         if (!renderingCanvasRef.current) return;
@@ -88,7 +85,6 @@ export function Canvas({ className, ...rest }: CanvasProps) {
             // if the drawn stroke index is greater that the drawnStroke state
             //  length minus the history index, skip drawing it
             if (index >= drawnStrokes.length - historyIndex) return;
-            console.log('drawing points ...');
 
             // roughCanvas will mutate the passed points so we need to create
             // a copy of the state to avoid infinite loop
@@ -99,7 +95,6 @@ export function Canvas({ className, ...rest }: CanvasProps) {
                 stroke: drawnStroke.color,
                 ...defaultStrokeOption.current,
             });
-            console.log('points drawn');
         });
 
         return () => {

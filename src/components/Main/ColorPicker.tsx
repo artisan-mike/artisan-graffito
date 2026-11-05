@@ -1,10 +1,23 @@
 'use client';
 
-interface ColorPickerProps {
+import { cn } from 'cn';
+import React from 'react';
+
+import { fillStyle } from '@/store/type';
+
+import { Button } from '../sharables/Button';
+
+interface ColorPickerProps extends React.ComponentProps<'div'> {
     handler: (color: string) => void;
+    fillStyle?: fillStyle;
 }
 
-export function ColorPicker({ handler }: ColorPickerProps) {
+export function ColorPicker({
+    handler,
+    fillStyle,
+    className,
+    ...rest
+}: ColorPickerProps) {
     const colors: string[] = [
         'black',
         'white',
@@ -14,16 +27,23 @@ export function ColorPicker({ handler }: ColorPickerProps) {
         'yellow',
     ];
     return (
-        <div className="flex gap-3">
+        <div
+            className={cn(
+                'grid grid-cols-4 gap-3 w-[17rem] bg-gray-200  border-2 border-text-weak p-2',
+                className,
+            )}
+            {...rest}
+        >
             {colors.map((color) => (
-                <div
+                <Button
                     key={color}
                     onClick={() => {
                         handler(color);
                     }}
                     className="h-6 w-6"
-                    style={{ background: color }}
-                ></div>
+                    color={color}
+                    fillStyle={fillStyle}
+                ></Button>
             ))}
         </div>
     );
