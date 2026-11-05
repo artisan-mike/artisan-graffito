@@ -8,6 +8,7 @@ export const fillStyles: fillStyle[] = [
 ];
 
 export const colors: string[] = [
+    'transparent',
     'black',
     'white',
     'red',

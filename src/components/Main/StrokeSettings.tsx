@@ -74,6 +74,7 @@ export function StrokeSettings() {
                 />
                 <ColorPicker
                     handler={handleFillPick}
+                    fillStyle={fillStyle}
                     className={cn(
                         'absolute z-40 top-[110%] left-0 hidden',
                         showFillPicker && 'grid',

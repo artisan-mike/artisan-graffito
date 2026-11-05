@@ -44,3 +44,9 @@
 ## 0.5.0
 
     - added the stroke sytle changing functionality
+
+## 0.6.0
+
+    - added the transparent color
+    - fixed the fill color buttons not rendering with the actual fill style
+    - removed stroke entrirely when the stroke width is set to 0
