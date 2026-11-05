@@ -3,6 +3,7 @@
 import { Canvas } from '@/components/Main/Canvas';
 import { ColorPicker } from '@/components/Main/ColorPicker';
 import { Control } from '@/components/Main/Control';
+import { StrokeWidth } from '@/components/Main/StrokeWidth';
 import { handleFillPick, handleStrokePick } from '@/lib/color_picker_hanlders';
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
             <ColorPicker handler={handleFillPick} />
             <p>Stroke:</p>
             <ColorPicker handler={handleStrokePick} />
+            <StrokeWidth />
         </main>
     );
 }
