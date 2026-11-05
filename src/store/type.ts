@@ -4,6 +4,7 @@ export type Stroke = {
     type: 'curve';
     strokeWidth: number;
     color: string;
+    fillColor: string;
     points: Point[];
 };
 

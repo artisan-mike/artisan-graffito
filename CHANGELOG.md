@@ -9,10 +9,19 @@
 
 ## 0.1.0
 
-    - Created the Canvas component in wich we can draw
-    - Added the ability to draw in the canvas
+    - created the Canvas component in wich we can draw
+    - sdded the ability to draw in the canvas
 
 ## 0.2.0
 
-    - Added undo and redo functionality
+    - sdded undo and redo functionality
     - created button component
+
+## 0.3.0
+
+    - added the functionality to choose stroke and fill color
+    - created color picker component
+
+## 0.3.1
+
+    - fixed inifinite loop when drawing a single point

@@ -4,6 +4,7 @@ import { cn } from 'cn';
 import { useEffect, useRef, useState } from 'react';
 import rough from 'roughjs';
 import { RoughCanvas } from 'roughjs/bin/canvas';
+import { Options } from 'roughjs/bin/core';
 import { useSnapshot } from 'valtio';
 
 import {
@@ -12,6 +13,7 @@ import {
     handleMouseUp,
 } from '@/lib/canvas_handlers';
 import { appState } from '@/store/app_state';
+import { Point } from '@/store/type';
 
 interface CanvasProps extends React.ComponentProps<'canvas'> {}
 
@@ -20,6 +22,16 @@ export function Canvas({ className, ...rest }: CanvasProps) {
     const roughCanvasRef = useRef<RoughCanvas | null>(null);
     const [isMousePressed, setIsMousePressed] = useState(false);
     const { actualStroke, drawnStrokes, historyIndex } = useSnapshot(appState);
+
+    const defaultStrokeOption = useRef<Options>({
+        hachureGap: 3,
+        seed: 7,
+        roughness: 0.5,
+        bowing: 0,
+        preserveVertices: true,
+        simplification: 0.5,
+        hachureAngle: 45,
+    });
 
     // initialize roughCanvas on the first render
     useEffect(() => {
@@ -36,18 +48,17 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         if (actualStroke.points.length > 0) {
             roughCanvas.curve(actualPoints, {
                 strokeWidth: actualStroke.strokeWidth,
-                fill: 'none',
-                seed: 1,
-                roughness: 0,
-                bowing: 0,
-                preserveVertices: true,
-                simplification: 0.5,
+                fill: actualStroke.fillColor,
+                stroke: actualStroke.color,
+                ...defaultStrokeOption.current,
             });
         }
-    }, [actualStroke]);
+    }, [actualStroke, defaultStrokeOption]);
 
     // draw the strokes in the drawn strokes whenever it changes
     useEffect(() => {
+        console.log('drawing stokes from the draw strokes');
+
         if (!roughCanvasRef.current) return;
         const roughCanvas = roughCanvasRef.current;
         if (!canvasRef.current) return;
@@ -57,21 +68,22 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         const ctx = canvas.getContext('2d');
         ctx?.clearRect(0, 0, canvas.width, canvas.height);
 
-        const drawnStrokes = Array.from(appState.drawnStrokes);
         drawnStrokes.forEach((drawnStroke, index) => {
             // if the drawn stroke index is greater that the drawnStroke state
             //  length minus the history index, skip drawing it
             if (index >= drawnStrokes.length - historyIndex) return;
-            roughCanvas.curve(drawnStroke.points, {
+            console.log('drawing points ...');
+
+            // roughCanvas will mutate the passed points so we need to create
+            // a copy of the state to avoid infinite loop
+            let points: Point[] = drawnStroke.points.map((point) => [...point]);
+            roughCanvas.curve(points, {
                 strokeWidth: drawnStroke.strokeWidth,
-                fill: 'green',
-                fillStyle: 'solid',
-                seed: 1,
-                roughness: 0,
-                bowing: 0,
-                preserveVertices: true,
-                simplification: 0.5,
+                fill: drawnStroke.fillColor,
+                stroke: drawnStroke.color,
+                ...defaultStrokeOption.current,
             });
+            console.log('points drawn');
         });
 
         return () => {

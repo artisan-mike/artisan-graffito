@@ -23,7 +23,6 @@ export function handleMouseDown(ev: MouseEvent<HTMLCanvasElement>) {
     appState.drawnStrokes.splice(
         appState.drawnStrokes.length - appState.historyIndex,
     );
-    console.log(appState.drawnStrokes);
 
     // reset the history index
     appState.historyIndex = 0;
