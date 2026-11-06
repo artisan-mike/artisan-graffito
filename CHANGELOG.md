@@ -67,3 +67,8 @@
 ## 0.9.0
 
     - the app state is now stored in the browser
+
+## 0.10.0
+
+    - added the reset button to clear the drawing app
+    - added the reload button to revert all undos including the reset
