@@ -15,6 +15,7 @@ import {
     saveToPng,
 } from '@/lib/canvas_handlers';
 import { appState } from '@/store/app_state';
+import { HEIGHT, WIDTH } from '@/store/constant_datas';
 import { Point } from '@/store/type';
 
 import { Button } from '../sharables/Button';
@@ -34,13 +35,14 @@ export function Canvas({ className, ...rest }: CanvasProps) {
     const { actualStroke, drawnStrokes, historyIndex } = useSnapshot(appState);
 
     const defaultStrokeOption = useRef<Options>({
-        hachureGap: 3,
+        hachureGap: 8,
         seed: 7,
         roughness: 0.5,
         bowing: 0,
         preserveVertices: true,
         simplification: 0.5,
         hachureAngle: 45,
+        fillWeight: 1,
     });
 
     // initialize the rcs (RoughCavas) on the first render
@@ -57,6 +59,11 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         if (!drawingCanvasRef.current) return;
         const roughCanvas = drawingRcRef.current;
         const canvas = drawingCanvasRef.current;
+        // quadruple the pixel density of the canva
+        canvas.width = WIDTH * 2;
+        canvas.height = HEIGHT * 2;
+        canvas.getContext('2d')?.scale(2, 2);
+
         const actualPoints = Array.from(appState.actualStroke.points);
 
         if (actualStroke.points.length > 0) {
@@ -84,6 +91,10 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         const roughCanvas = renderingRcRef.current;
         if (!renderingCanvasRef.current) return;
         const canvas = renderingCanvasRef.current;
+        // quadruple the pixel density of the canva
+        canvas.width = WIDTH * 2;
+        canvas.height = HEIGHT * 2;
+        canvas.getContext('2d')?.scale(2, 2);
 
         const ctx = canvas.getContext('2d');
         if (ctx) {
@@ -118,46 +129,51 @@ export function Canvas({ className, ...rest }: CanvasProps) {
     }, [drawnStrokes, historyIndex]);
 
     return (
-        <div
-            className={cn('relative m-auto w-fit', className)}
-            {...rest}
-        >
-            <canvas
-                width={1000}
-                height={1000}
-                ref={drawingCanvasRef}
-                onMouseMove={(e) => {
-                    handleMouseMove(e, isMousePressed);
-                }}
-                onMouseDown={(e) => {
-                    setIsMousePressed(true);
-                    handleMouseDown(e);
-                }}
-                onMouseUp={() => {
-                    setIsMousePressed(false);
-                    handleMouseUp();
-                }}
-                onMouseLeave={() => {
-                    setIsMousePressed(false);
-                }}
+        <div className="relative m-auto max-w-[80rem] bg-red-100">
+            <div className="w-full overflow-x-scroll">
+                <div
+                    className={cn(
+                        'relative m-auto w-fit bg-red-500 ',
+                        className,
+                    )}
+                    {...rest}
+                >
+                    <canvas
+                        ref={drawingCanvasRef}
+                        onMouseMove={(e) => {
+                            handleMouseMove(e, isMousePressed);
+                        }}
+                        onMouseDown={(e) => {
+                            setIsMousePressed(true);
+                            handleMouseDown(e);
+                        }}
+                        onMouseUp={() => {
+                            setIsMousePressed(false);
+                            handleMouseUp();
+                        }}
+                        onMouseLeave={() => {
+                            setIsMousePressed(false);
+                        }}
 
-                className="border-text-strong absolute top-0 left-1/2 z-10 -translate-x-1/2 border-2"
-            ></canvas>
-            <canvas
-                width={1000}
-                height={1000}
-                ref={renderingCanvasRef}
-                className="border-text-strong border-2 bg-white"
-            ></canvas>
+                        className="border-text-strong absolute top-0 left-1/2 z-10 -translate-x-1/2 border-2"
+                        style={{ width: WIDTH, height: HEIGHT }}
+                    ></canvas>
+                    <canvas
+                        ref={renderingCanvasRef}
+                        className="border-text-strong border-2"
+                        style={{ width: WIDTH, height: HEIGHT }}
+                    ></canvas>
+                </div>
+            </div>
             <Button
                 onClick={() => {
                     console.log('hmmmm');
                     saveToPng(renderingCanvasRef.current);
                 }}
-                className="absolute -top-2 right-0 w-9 -translate-y-full"
+                className="absolute -top-3 w-9 -translate-y-full"
             >
                 <DownloadIcon className="text-5xl" />
-                Enrigistrer en PNG
+                Enregistrer l'image
             </Button>
         </div>
     );

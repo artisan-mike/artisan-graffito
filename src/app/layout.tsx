@@ -28,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
             lang="en"
             className={`${shantellSans.variable} h-full antialiased`}
         >
-            <body className="font-primary flex h-full min-h-full flex-col">
+            <body className="font-primary flex h-full min-h-full flex-col overflow-scroll">
                 {children}
             </body>
         </html>

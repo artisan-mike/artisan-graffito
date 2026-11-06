@@ -54,3 +54,8 @@
 ## 0.7.0
 
     - add the functionality to save the drawing into a png file
+
+## 0.8.0
+
+    - doubled the image quality
+    - adjusted the canvas styling

@@ -76,6 +76,7 @@ export function saveToPng(canvas: HTMLCanvasElement | null) {
     console.log('runing saveToPng');
 
     if (!canvas) return;
+
     console.log('saving the image');
 
     // create a png blop object from the image contained in the canvas
