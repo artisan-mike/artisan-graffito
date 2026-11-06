@@ -1,5 +1,6 @@
 'use client';
 
+import { PencilSimpleSlashIcon } from '@phosphor-icons/react';
 import { cn } from 'cn';
 import { useState } from 'react';
 import { useSnapshot } from 'valtio';
@@ -21,8 +22,8 @@ export function StrokeSettings() {
     const [showOverlay, setShowOverlay] = useState(false);
 
     return (
-        <div className="border-stroke-strong m-auto mt-2 grid w-fit grid-cols-2 gap-4 border-2 p-3">
-            <div className="relative">
+        <div className="border-stroke-strong tablette:grid m-auto mt-2 w-fit grid-cols-2 gap-4 border-2 p-3">
+            <div className="relative flex items-center">
                 <span>Couleur du trait :</span>
                 <Button
                     disabled
@@ -39,22 +40,25 @@ export function StrokeSettings() {
                         setShowFillPicker(false);
                         setShowStylePicker(false);
                     }}
-                />
-                <ColorPicker
-                    handler={handleStrokePick}
-                    fillStyle="solid"
-                    className={cn(
-                        'absolute z-40 top-[110%] left-0 hidden',
-                        showStrokePicker && 'grid',
+                >
+                    {color === 'transparent' && (
+                        <PencilSimpleSlashIcon className="text-3xl" />
                     )}
-                    onClick={() => {
-                        setShowStrokePicker(false);
-                        setShowOverlay(false);
-                    }}
-                />
+                </Button>
+                {showStrokePicker && (
+                    <ColorPicker
+                        handler={handleStrokePick}
+                        fillStyle="solid"
+                        className={cn('absolute z-40 bottom-6 left-0')}
+                        onClick={() => {
+                            setShowStrokePicker(false);
+                            setShowOverlay(false);
+                        }}
+                    />
+                )}
             </div>
 
-            <div className="relative">
+            <div className="relative flex items-center">
                 <span>Couleur de remplissage :</span>
                 <Button
                     disabled
@@ -71,22 +75,25 @@ export function StrokeSettings() {
                         setShowStrokePicker(false);
                         setShowStylePicker(false);
                     }}
-                />
-                <ColorPicker
-                    handler={handleFillPick}
-                    fillStyle={fillStyle}
-                    className={cn(
-                        'absolute z-40 top-[110%] left-0 hidden',
-                        showFillPicker && 'grid',
+                >
+                    {fillColor === 'transparent' && (
+                        <PencilSimpleSlashIcon className="text-3xl" />
                     )}
-                    onClick={() => {
-                        setShowFillPicker(false);
-                        setShowOverlay(false);
-                    }}
-                />
+                </Button>
+                {showFillPicker && (
+                    <ColorPicker
+                        handler={handleFillPick}
+                        fillStyle={fillStyle}
+                        className={cn('absolute z-40 bottom-6 left-0')}
+                        onClick={() => {
+                            setShowFillPicker(false);
+                            setShowOverlay(false);
+                        }}
+                    />
+                )}
             </div>
 
-            <div className="relative">
+            <div className="tablette:mb-0 relative mb-2 flex items-center">
                 <span>Style de remplissage :</span>
                 <Button
                     disabled
@@ -104,29 +111,29 @@ export function StrokeSettings() {
                         setShowStrokePicker(false);
                     }}
                 />
-                <div
-                    className={cn(
-                        'absolute z-40 top-[110%] left-0 hidden',
-                        showStylePicker &&
-                            'grid grid-cols-4 gap-3 p-2 border-2 border-text-strong w-[17rem]',
-                    )}
-                    onClick={() => {
-                        setShowOverlay(false);
-                        setShowStylePicker(false);
-                    }}
-                >
-                    {fillStyles.map((fillStyle) => (
-                        <Button
-                            key={fillStyle}
-                            fillStyle={fillStyle}
-                            className="w-6"
-                            color="black"
-                            onClick={() => {
-                                handleFillStylePick(fillStyle);
-                            }}
-                        />
-                    ))}
-                </div>
+                {showStylePicker && (
+                    <div
+                        className={cn(
+                            'absolute z-40 bottom-6 left-0 grid grid-cols-4 gap-3 p-2 border-2 border-text-strong w-[17rem] bg-gray-200',
+                        )}
+                        onClick={() => {
+                            setShowOverlay(false);
+                            setShowStylePicker(false);
+                        }}
+                    >
+                        {fillStyles.map((fillStyle) => (
+                            <Button
+                                key={fillStyle}
+                                fillStyle={fillStyle}
+                                className="w-6"
+                                color="black"
+                                onClick={() => {
+                                    handleFillStylePick(fillStyle);
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
 
             {/* overlay for close the color pickers when it is clicked */}

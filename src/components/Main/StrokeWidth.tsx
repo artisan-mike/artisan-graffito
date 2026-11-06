@@ -11,7 +11,7 @@ export function StrokeWidth() {
         <form
             action=""
             onSubmit={(e) => e.preventDefault()}
-            className="flex flex-col"
+            className="relative flex flex-col gap-1"
         >
             <label htmlFor="strokeWidth">Taille du trait: {value}</label>
             <input
@@ -26,10 +26,12 @@ export function StrokeWidth() {
                     setValue(rangeValue);
                     handleRangeChange(rangeValue);
                 }}
+                className="cursor-pointer border-2 bg-yellow-100 accent-yellow-100"
             />
             <div
-                style={{ width: value, height: value, background: 'black' }}
-                className="m-auto rounded-full"
+                aria-hidden
+                style={{ scale: value / 3, background: 'black' }}
+                className="absolute top-[0.6rem] right-[5.2rem] m-auto h-1 w-1 origin-center rounded-full"
             ></div>
         </form>
     );

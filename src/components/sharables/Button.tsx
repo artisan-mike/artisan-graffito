@@ -20,10 +20,18 @@ export function Button({
     ...rest
 }: ButtonProps) {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         if (!canvasRef.current) return;
+        if (!buttonRef.current) return;
         const canvas = canvasRef.current;
+
+        // make the canvas the same as its css total size
+        const { width, height } = canvas.getBoundingClientRect();
+        canvas.height = height;
+        canvas.width = width;
+
         const rc = rough.canvas(canvas);
 
         const canvasHeight = canvas.height - 16;
@@ -32,9 +40,9 @@ export function Button({
         rc.rectangle(8, 8, canvasWidth, canvasHeight, {
             fill: color || 'yellow',
             fillStyle: fillStyle || 'hachure',
-            strokeWidth: 2,
-            hachureGap: 12,
-            fillWeight: 2,
+            strokeWidth: 1,
+            hachureGap: 5,
+            fillWeight: 1,
             seed: 7,
         });
 
@@ -45,6 +53,7 @@ export function Button({
     });
     return (
         <button
+            ref={buttonRef}
             className={cn(
                 'relative flex items-center justify-center w-7 h-6  transition-all cursor-pointer hover:-rotate-5 ',
                 disabled && 'active:translate-0 hover:rotate-0',
@@ -53,7 +62,6 @@ export function Button({
             {...rest}
         >
             <span className="relative z-10 flex items-center justify-center gap-2">
-                {' '}
                 {children}
             </span>
 

@@ -59,3 +59,7 @@
 
     - doubled the image quality
     - adjusted the canvas styling
+
+## 0.8.1
+
+    - restyled the drawing interface

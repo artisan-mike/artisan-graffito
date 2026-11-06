@@ -167,7 +167,6 @@ export function Canvas({ className, ...rest }: CanvasProps) {
             </div>
             <Button
                 onClick={() => {
-                    console.log('hmmmm');
                     saveToPng(renderingCanvasRef.current);
                 }}
                 className="absolute -top-3 w-9 -translate-y-full"

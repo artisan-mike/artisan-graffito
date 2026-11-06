@@ -1,5 +1,6 @@
 'use client';
 
+import { PencilSimpleSlashIcon } from '@phosphor-icons/react';
 import { cn } from 'cn';
 import React from 'react';
 
@@ -36,7 +37,11 @@ export function ColorPicker({
                     className="h-6 w-6"
                     color={color}
                     fillStyle={fillStyle}
-                ></Button>
+                >
+                    {color === 'transparent' && (
+                        <PencilSimpleSlashIcon className="text-3xl" />
+                    )}
+                </Button>
             ))}
         </div>
     );
