@@ -1,5 +1,3 @@
-import { MouseEvent } from 'react';
-
 import { appState } from '@/store/app_state';
 
 import {
@@ -13,9 +11,10 @@ import {
  * on the canvas element, remove all the strokes behind the history index
  * then push the point to the actualStroke state
  */
-export function handleMouseDown(ev: MouseEvent<HTMLCanvasElement>) {
-    // get the canva element
-    const canvas = ev.currentTarget;
+export function handleMouseDown(ev: MouseEvent, canvas: HTMLCanvasElement) {
+    // update isMousePressed app state
+    appState.isMousePressed = true;
+
     // calculate the actual mouse position
     const { newX, newY } = calculateMousePositionOnCanvas(canvas, ev);
 
@@ -36,10 +35,10 @@ export function handleMouseDown(ev: MouseEvent<HTMLCanvasElement>) {
  * at the same time on the canvas element
  */
 export const handleMouseMove = throttle(
-    (ev: MouseEvent<HTMLCanvasElement>, isMousePressed: boolean) => {
-        if (!isMousePressed) return;
-        // get the canva element
-        const canvas = ev.currentTarget;
+    (ev: MouseEvent, canvas: HTMLCanvasElement) => {
+        // if the mouse is not pressed, do nothing
+        if (!appState.isMousePressed) return;
+
         // calculate the actual mouse position
         const { newX, newY } = calculateMousePositionOnCanvas(canvas, ev);
 
@@ -65,6 +64,9 @@ export const handleMouseMove = throttle(
  * stroke state then clear the actualStroke state
  */
 export function handleMouseUp() {
+    // update the isMousePressed app state
+    appState.isMousePressed = false;
+
     appState.drawnStrokes.push({ ...appState.actualStroke });
     appState.actualStroke.points = [];
 }

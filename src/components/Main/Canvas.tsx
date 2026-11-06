@@ -2,7 +2,7 @@
 
 import { DownloadIcon } from '@phosphor-icons/react';
 import { cn } from 'cn';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import rough from 'roughjs';
 import { RoughCanvas } from 'roughjs/bin/canvas';
 import { Options } from 'roughjs/bin/core';
@@ -31,7 +31,6 @@ export function Canvas({ className, ...rest }: CanvasProps) {
     // used for drawing the points in the actualStrokes app state
     const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
     const drawingRcRef = useRef<RoughCanvas | null>(null);
-    const [isMousePressed, setIsMousePressed] = useState(false);
     const { actualStroke, drawnStrokes, historyIndex } = useSnapshot(appState);
 
     const defaultStrokeOption = useRef<Options>({
@@ -140,6 +139,36 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         };
     }, [drawnStrokes, historyIndex]);
 
+    // track the mouse positition across the entire document and
+    // execute appropriate handlers
+    useEffect(() => {
+        if (!drawingCanvasRef.current) return;
+        const drawingCanvas = drawingCanvasRef.current;
+
+        document.addEventListener('mousedown', (ev) => {
+            if (ev.target instanceof Element) {
+                if (ev.target.tagName === 'BUTTON') return;
+            }
+            console.log('executing mouse down');
+            handleMouseDown(ev, drawingCanvas);
+        });
+        document.addEventListener('mousemove', (ev) => {
+            if (ev.target instanceof Element) {
+                if (ev.target.tagName === 'BUTTON') return;
+            }
+            console.log('executing mouse move');
+
+            handleMouseMove(ev, drawingCanvas);
+        });
+        document.addEventListener('mouseup', (ev) => {
+            if (ev.target instanceof Element) {
+                if (ev.target.tagName === 'BUTTON') return;
+            }
+            console.log('executing mouse up');
+            handleMouseUp();
+        });
+    }, []);
+
     return (
         <div className="relative m-auto max-w-[80rem] bg-red-100">
             <div className="w-full overflow-x-scroll">
@@ -152,20 +181,6 @@ export function Canvas({ className, ...rest }: CanvasProps) {
                 >
                     <canvas
                         ref={drawingCanvasRef}
-                        onMouseMove={(e) => {
-                            handleMouseMove(e, isMousePressed);
-                        }}
-                        onMouseDown={(e) => {
-                            setIsMousePressed(true);
-                            handleMouseDown(e);
-                        }}
-                        onMouseUp={() => {
-                            setIsMousePressed(false);
-                            handleMouseUp();
-                        }}
-                        onMouseLeave={() => {
-                            setIsMousePressed(false);
-                        }}
 
                         className="border-text-strong absolute top-0 left-1/2 z-10 -translate-x-1/2 border-2"
                         style={{ width: WIDTH, height: HEIGHT }}

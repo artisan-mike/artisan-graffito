@@ -3,8 +3,6 @@
  * a specific prolem logic
  */
 
-import { MouseEvent } from 'react';
-
 /**
  * @description Calculate the distance between two points
  */
@@ -40,11 +38,11 @@ export function throttle<T extends unknown[]>(
  */
 export function calculateMousePositionOnCanvas(
     canvas: HTMLCanvasElement,
-    ev: MouseEvent<HTMLCanvasElement>,
+    ev: MouseEvent,
 ) {
     const rect = canvas.getBoundingClientRect();
 
-    // calculate the actual point position
+    // calculate the actual point position on the canvas element
     const newX = ev.clientX - rect.left;
     const newY = ev.clientY - rect.top;
 

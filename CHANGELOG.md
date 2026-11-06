@@ -72,3 +72,7 @@
 
     - added the reset button to clear the drawing app
     - added the reload button to revert all undos including the reset
+
+## 0.11.0
+
+    - added the functionality to draw from outside the drawing app

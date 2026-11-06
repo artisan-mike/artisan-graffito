@@ -61,13 +61,15 @@ export function Button({
             )}
             {...rest}
         >
-            <span className="relative z-10 flex items-center justify-center gap-2">
+            <span className="pointer-events-none relative z-10 flex items-center justify-center gap-2">
                 {children}
             </span>
 
             <canvas
+                aria-hidden
+
                 ref={canvasRef}
-                className="absolute top-1/2 left-1/2 h-full w-full -translate-1/2"
+                className="pointer-events-none absolute top-1/2 left-1/2 h-full w-full -translate-1/2"
             ></canvas>
         </button>
     );

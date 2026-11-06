@@ -18,4 +18,6 @@ export interface AppState {
     drawnStrokes: Stroke[];
     // number of strokes to prevent from diplaying
     historyIndex: number;
+    // track the pressing state
+    isMousePressed: boolean;
 }
