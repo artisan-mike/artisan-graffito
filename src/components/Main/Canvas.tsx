@@ -16,7 +16,7 @@ import {
 } from '@/lib/canvas_handlers';
 import { appState } from '@/store/app_state';
 import { HEIGHT, WIDTH } from '@/store/constant_datas';
-import { Point } from '@/store/type';
+import { AppState, Point } from '@/store/type';
 
 import { Button } from '../sharables/Button';
 
@@ -51,6 +51,15 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         if (!drawingCanvasRef.current) return;
         drawingRcRef.current = rough.canvas(drawingCanvasRef.current);
         renderingRcRef.current = rough.canvas(renderingCanvasRef.current);
+
+        // get state form local storage if there is any
+        const localData = localStorage.getItem('appState');
+        if (localData) {
+            const parsedLocalData = JSON.parse(localData) as AppState;
+            appState.actualStroke = parsedLocalData.actualStroke;
+            appState.drawnStrokes = parsedLocalData.drawnStrokes;
+            appState.historyIndex = parsedLocalData.historyIndex;
+        }
     }, []);
 
     // draw the strokes in the actual strokes state whenever it changes
@@ -122,6 +131,9 @@ export function Canvas({ className, ...rest }: CanvasProps) {
                 ...defaultStrokeOption.current,
             });
         });
+
+        // add the drawn strokes to the local storage after each rendering
+        localStorage.setItem('appState', JSON.stringify(appState));
 
         return () => {
             ctx?.clearRect(0, 0, canvas.width, canvas.height);

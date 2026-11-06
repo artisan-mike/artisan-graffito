@@ -63,3 +63,7 @@
 ## 0.8.1
 
     - restyled the drawing interface
+
+## 0.9.0
+
+    - the app state is now stored in the browser

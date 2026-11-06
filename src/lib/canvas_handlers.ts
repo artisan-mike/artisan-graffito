@@ -73,11 +73,7 @@ export function handleMouseUp() {
  * @description Save the image contained in the canvas as png image
  */
 export function saveToPng(canvas: HTMLCanvasElement | null) {
-    console.log('runing saveToPng');
-
     if (!canvas) return;
-
-    console.log('saving the image');
 
     // create a png blop object from the image contained in the canvas
     canvas.toBlob((blop) => {
