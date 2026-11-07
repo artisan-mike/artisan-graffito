@@ -20,4 +20,6 @@ export interface AppState {
     historyIndex: number;
     // track the pressing state
     isMousePressed: boolean;
+    // track number of fingers on the screen
+    touchesInTheScreen: Set<number>;
 }

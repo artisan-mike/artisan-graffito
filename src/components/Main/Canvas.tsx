@@ -145,49 +145,48 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         if (!drawingCanvasRef.current) return;
         const drawingCanvas = drawingCanvasRef.current;
 
-        document.addEventListener('mousedown', (ev) => {
+        // add listener and avoid executing it when it's on the canvas
+        document.addEventListener('pointerdown', (ev) => {
+            // allow drawing from outside the canvas
             if (ev.target instanceof Element) {
-                if (ev.target.tagName === 'BUTTON') return;
+                if (
+                    ev.target.tagName !== 'CANVAS' &&
+                    ev.target.tagName !== 'MAIN' &&
+                    ev.target.tagName !== 'DIV' &&
+                    ev.target.tagName !== 'H1'
+                )
+                    return;
             }
-            console.log('executing mouse down');
+
             handleMouseDown(ev, drawingCanvas);
         });
-        document.addEventListener('mousemove', (ev) => {
-            if (ev.target instanceof Element) {
-                if (ev.target.tagName === 'BUTTON') return;
-            }
-            console.log('executing mouse move');
-
+        document.addEventListener('pointermove', (ev) => {
             handleMouseMove(ev, drawingCanvas);
         });
-        document.addEventListener('mouseup', (ev) => {
-            if (ev.target instanceof Element) {
-                if (ev.target.tagName === 'BUTTON') return;
-            }
-            console.log('executing mouse up');
-            handleMouseUp();
+
+        document.addEventListener('pointerup', () => {
+            handleMouseUp(drawingCanvas);
+        });
+        document.addEventListener('pointercancel', () => {
+            handleMouseUp(drawingCanvas);
         });
     }, []);
 
     return (
-        <div className="relative m-auto max-w-[80rem] bg-red-100">
-            <div className="w-full overflow-x-scroll">
+        <div className="relative m-auto max-w-[80rem]">
+            <div className="box-content w-full overflow-x-scroll border-8">
                 <div
-                    className={cn(
-                        'relative m-auto w-fit bg-red-500 ',
-                        className,
-                    )}
+                    className={cn('relative m-auto w-fit', className)}
                     {...rest}
                 >
                     <canvas
                         ref={drawingCanvasRef}
 
-                        className="border-text-strong absolute top-0 left-1/2 z-10 -translate-x-1/2 border-2"
+                        className="absolute top-0 left-1/2 z-10 box-content -translate-x-1/2 touch-pinch-zoom"
                         style={{ width: WIDTH, height: HEIGHT }}
                     ></canvas>
                     <canvas
                         ref={renderingCanvasRef}
-                        className="border-text-strong border-2"
                         style={{ width: WIDTH, height: HEIGHT }}
                     ></canvas>
                 </div>

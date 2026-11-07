@@ -38,13 +38,13 @@ export function throttle<T extends unknown[]>(
  */
 export function calculateMousePositionOnCanvas(
     canvas: HTMLCanvasElement,
-    ev: MouseEvent,
+    mousePosition: { clientX: number; clientY: number },
 ) {
     const rect = canvas.getBoundingClientRect();
 
     // calculate the actual point position on the canvas element
-    const newX = ev.clientX - rect.left;
-    const newY = ev.clientY - rect.top;
+    const newX = mousePosition.clientX - rect.left;
+    const newY = mousePosition.clientY - rect.top;
 
     return { newX, newY };
 }

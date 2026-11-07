@@ -76,3 +76,7 @@
 ## 0.11.0
 
     - added the functionality to draw from outside the drawing app
+
+## 0.12.0
+
+    - made drawing on a touch screen possible

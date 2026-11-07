@@ -14,4 +14,5 @@ export const appState = proxy<AppState>({
     drawnStrokes: [],
     historyIndex: 0,
     isMousePressed: false,
+    touchesInTheScreen: new Set(),
 });

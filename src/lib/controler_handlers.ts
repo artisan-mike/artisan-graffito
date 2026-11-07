@@ -5,11 +5,8 @@ import { appState } from '@/store/app_state';
  * by increasing the history index state by one
  */
 export function handleUndoClick() {
-    console.log('firing button');
-
     // if there is no stroke in the app state, do nothing
     if (appState.drawnStrokes.length === 0) return;
-    console.log(appState.drawnStrokes.length);
 
     // if the number of drawn strokes are equal to the number of history
     // index, do nothing
@@ -17,9 +14,6 @@ export function handleUndoClick() {
 
     // increment history index by one to undo
     appState.historyIndex = appState.historyIndex + 1;
-    console.log(appState.historyIndex);
-
-    console.log('finished execution');
 }
 
 /**
