@@ -80,3 +80,7 @@
 ## 0.12.0
 
     - made drawing on a touch screen possible
+
+## 0.12.1
+
+    - restyled the drawing app

@@ -3,6 +3,7 @@
 import { cn } from 'cn';
 import { useEffect, useRef } from 'react';
 import rough from 'roughjs';
+import { Options } from 'roughjs/bin/core';
 
 import { fillStyle } from '@/store/type';
 
@@ -26,24 +27,65 @@ export function Button({
         if (!canvasRef.current) return;
         if (!buttonRef.current) return;
         const canvas = canvasRef.current;
+        const button = buttonRef.current;
+        const ctx = canvas.getContext('2d');
 
         // make the canvas the same as its css total size
         const { width, height } = canvas.getBoundingClientRect();
-        canvas.height = height;
-        canvas.width = width;
+        canvas.height = height * 2;
+        canvas.width = width * 2;
+        canvas.getContext('2d')?.scale(2, 2);
 
         const rc = rough.canvas(canvas);
 
-        const canvasHeight = canvas.height - 16;
-        const canvasWidth = canvas.width - 16;
+        // diveded by two beacause I doubled the canvas size earlier
+        const canvasHeight = canvas.height / 2 - 4;
+        const canvasWidth = canvas.width / 2 - 4;
 
-        rc.rectangle(8, 8, canvasWidth, canvasHeight, {
-            fill: color || 'yellow',
-            fillStyle: fillStyle || 'hachure',
-            strokeWidth: 1,
-            hachureGap: 5,
-            fillWeight: 1,
-            seed: 7,
+        function rcRectangleSettings(options: Options): Options {
+            return {
+                fill: color || 'yellow',
+                fillStyle: fillStyle || 'hachure',
+                fillWeight: 1,
+                seed: 7,
+                strokeWidth: options.strokeWidth || 1,
+                hachureGap: 4,
+            };
+        }
+
+        rc.rectangle(2, 2, canvasWidth, canvasHeight, rcRectangleSettings({}));
+
+        button.addEventListener('pointerover', () => {
+            ctx?.clearRect(0, 0, canvas.width, canvas.height);
+            rc.rectangle(
+                2,
+                2,
+                canvasWidth,
+                canvasHeight,
+                rcRectangleSettings({ strokeWidth: 2 }),
+            );
+        });
+
+        button.addEventListener('pointerleave', () => {
+            ctx?.clearRect(0, 0, canvas.width, canvas.height);
+            rc.rectangle(
+                2,
+                2,
+                canvasWidth,
+                canvasHeight,
+                rcRectangleSettings({ strokeWidth: 1 }),
+            );
+        });
+
+        button.addEventListener('pointercancel', () => {
+            ctx?.clearRect(0, 0, canvas.width, canvas.height);
+            rc.rectangle(
+                2,
+                2,
+                canvasWidth,
+                canvasHeight,
+                rcRectangleSettings({ strokeWidth: 1 }),
+            );
         });
 
         return () => {
@@ -55,8 +97,9 @@ export function Button({
         <button
             ref={buttonRef}
             className={cn(
-                'relative flex items-center justify-center w-7 h-6  transition-all cursor-pointer hover:-rotate-5 ',
+                'relative flex items-center justify-center w-7 h-6  cursor-pointer active:scale-95 ',
                 disabled && 'active:translate-0 hover:rotate-0',
+
                 className,
             )}
             {...rest}

@@ -23,10 +23,7 @@ export function Control() {
                 <Button onClick={handleUndoClick}>
                     <ArrowArcLeftIcon className="text-5xl" />
                 </Button>
-                <Button
-                    onClick={handleRedoClick}
-                    className="hover:rotate-5"
-                >
+                <Button onClick={handleRedoClick}>
                     <ArrowArcRightIcon className="text-5xl" />
                 </Button>
             </div>

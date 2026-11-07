@@ -37,7 +37,7 @@ export function Canvas({ className, ...rest }: CanvasProps) {
         hachureGap: 8,
         seed: 7,
         roughness: 0.5,
-        bowing: 0,
+        bowing: 1,
         preserveVertices: true,
         simplification: 0.5,
         hachureAngle: 45,

@@ -15,7 +15,7 @@ import { ColorPicker } from './ColorPicker';
 import { StrokeWidth } from './StrokeWidth';
 
 export function StrokeSettings() {
-    const { color, fillColor, fillStyle } = useSnapshot(appState.actualStroke);
+    const { color, fillColor, fillStyle } = useSnapshot(appState).actualStroke;
     const [showFillPicker, setShowFillPicker] = useState(false);
     const [showStrokePicker, setShowStrokePicker] = useState(false);
     const [showStylePicker, setShowStylePicker] = useState(false);
