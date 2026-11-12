@@ -84,3 +84,7 @@
 ## 0.12.1
 
     - restyled the drawing app
+
+## 0.13.0
+
+    - added footer component
