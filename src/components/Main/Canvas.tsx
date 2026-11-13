@@ -2,7 +2,7 @@
 
 import { DownloadIcon } from '@phosphor-icons/react';
 import { cn } from 'cn';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import rough from 'roughjs';
 import { RoughCanvas } from 'roughjs/bin/canvas';
 import { Options } from 'roughjs/bin/core';
@@ -19,6 +19,7 @@ import { HEIGHT, WIDTH } from '@/store/constant_datas';
 import { AppState, Point } from '@/store/type';
 
 import { Button } from '../sharables/Button';
+import { LoadingOverlay } from './LoadingOverlay';
 
 interface CanvasProps extends React.ComponentProps<'div'> {}
 
@@ -32,6 +33,8 @@ export function Canvas({ className, ...rest }: CanvasProps) {
     const drawingCanvasRef = useRef<HTMLCanvasElement>(null);
     const drawingRcRef = useRef<RoughCanvas | null>(null);
     const { actualStroke, drawnStrokes, historyIndex } = useSnapshot(appState);
+    // display a loading screen while loading local data
+    const [isLoading, setIsLoading] = useState(true);
 
     const defaultStrokeOption = useRef<Options>({
         hachureGap: 8,
@@ -59,6 +62,9 @@ export function Canvas({ className, ...rest }: CanvasProps) {
             appState.drawnStrokes = parsedLocalData.drawnStrokes;
             appState.historyIndex = parsedLocalData.historyIndex;
         }
+
+        // stop loading
+        setIsLoading(false);
     }, []);
 
     // draw the strokes in the actual strokes state whenever it changes
@@ -200,6 +206,8 @@ export function Canvas({ className, ...rest }: CanvasProps) {
                 <DownloadIcon className="text-5xl" />
                 Enregistrer l'image
             </Button>
+
+            {isLoading && <LoadingOverlay />}
         </div>
     );
 }

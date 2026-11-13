@@ -89,6 +89,10 @@
 
     - added footer component
 
-# 0.13.1
+## 0.13.1
 
     - removed unecessary ugly scrollbars
+
+## 0.14.0
+
+    - added loading screen when loading the data from local storage
