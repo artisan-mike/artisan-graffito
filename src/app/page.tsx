@@ -5,7 +5,7 @@ import { StrokeSettings } from '@/components/Main/StrokeSettings';
 
 export default function Home() {
     return (
-        <main className="mb-5 min-h-full overflow-scroll p-2">
+        <main className="mb-5 min-h-screen p-2">
             <LogoHeader />
             <Canvas />
             <Control />

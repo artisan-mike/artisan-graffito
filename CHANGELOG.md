@@ -88,3 +88,7 @@
 ## 0.13.0
 
     - added footer component
+
+# 0.13.1
+
+    - removed unecessary ugly scrollbars

@@ -27,10 +27,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<'/'>) {
     return (
         <html
-            lang="en"
+            lang="fr"
             className={`${shantellSans.variable} h-full antialiased`}
         >
-            <body className="font-primary flex h-full max-h-full flex-col overflow-scroll bg-gray-100">
+            <body className="font-primary flex flex-col overflow-scroll bg-gray-100">
                 {children}
                 <Footer />
             </body>
